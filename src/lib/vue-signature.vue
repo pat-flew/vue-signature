@@ -99,6 +99,30 @@
 					_this.fromDataURL(_this.defaultUrl)
 				}
 			},
+			ratioPainted() {
+				var _this = this;
+
+				var canvas = document.getElementById(_this.uid);
+
+				if(!canvas) {
+					return 0;
+				}
+
+				var context = canvas.getContext('2d');
+				var width = canvas.width;
+				var height = canvas.height;
+				var imageData = context.getImageData(0, 0, width, height);
+				var pixels = imageData.data;
+				var count = 0;
+
+				for(var i=0, len = pixels.length; i<len; i+=4) {
+					if(pixels[i] === 0 && pixels[i+1] ===0 && pixels[i+2] === 0) {
+						count += 1;
+					}
+				}
+
+				return count / (width * height);
+			},
 			clear(){
 				var _this = this;
 				_this.sig.clear();
