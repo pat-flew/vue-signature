@@ -53,7 +53,13 @@
 					backgroundColor:'rgb(255,255,255)',
 					penColor : 'rgb(0, 0, 0)'
 				},
-				uid:""
+				uid:"",
+				backgroundColor: {
+					r: 0,
+					g: 0,
+					b: 0,
+					a: 0
+				}
 			}
 		},
 		watch:{
@@ -95,9 +101,38 @@
 				window.addEventListener("resize", resizeCanvas);
 				resizeCanvas();
 
+				_this.storeBackgroundColor();
+
 				if (_this.defaultUrl !== ""){
 					_this.fromDataURL(_this.defaultUrl)
 				}
+			},
+			storeBackgroundColor() {
+				var _this = this;
+
+				var canvas = document.getElementById(_this.uid);
+
+				if(!canvas) {
+					return 0;
+				}
+
+				var context = canvas.getContext('2d');
+				var width = canvas.width;
+				var height = canvas.height;
+				var imageData = context.getImageData(0, 0, width, height);
+				var pixels = imageData.data;
+
+				// store the background color so we can determine the
+				// number of pixels painted
+
+				_this.backgroundColor = {
+					r: pixels[0],
+					g: pixels[1],
+					b: pixels[2],
+					a: pixels[3]
+				}; 
+
+
 			},
 			getRatioPainted() {
 				var _this = this;
@@ -115,8 +150,10 @@
 				var pixels = imageData.data;
 				var count = 0;
 
+				let { r, g, b, a } = this.backgroundColor;
+
 				for(var i=0, len = pixels.length; i<len; i+=4) {
-					if(pixels[i] === 0 && pixels[i+1] ===0 && pixels[i+2] === 0) {
+					if(!(pixels[i] === r && pixels[i+1] ===g && pixels[i+2] === b && pixels[i+3] === a)) {
 						count += 1;
 					}
 				}
@@ -187,6 +224,9 @@
 			this.$nextTick().then(() => {
 				_this.draw()
 			});
+			// setInterval(() => {
+			// 	q.log(this.getRatioPainted());
+			// },2000);
 		}
 	}
 </script>

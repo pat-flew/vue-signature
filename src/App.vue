@@ -13,7 +13,8 @@ export default {
 	data() {
 		return {
 			option:{
-				penColor:"rgb(0, 0, 0)"
+				penColor:"rgb(0, 0, 0)",
+				backgroundColor: 'rgba(0,0,0,0)',
 			}
 		};
 	},
