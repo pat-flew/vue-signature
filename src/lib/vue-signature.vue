@@ -99,7 +99,7 @@
 					_this.fromDataURL(_this.defaultUrl)
 				}
 			},
-			ratioPainted() {
+			getRatioPainted() {
 				var _this = this;
 
 				var canvas = document.getElementById(_this.uid);
